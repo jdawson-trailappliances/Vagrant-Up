@@ -16,6 +16,11 @@ dir = File.dirname(File.expand_path(__FILE__))
 # |
 servers       = YAML.load_file("#{dir}/CONFIG.yaml")
 
+# |
+# | Set values for message
+# |
+$wpDomain     = servers['wpDomain']
+
 # | ············································································
 # | Vagrantfile API/syntax version. Don't touch unless you know what you're doing!
 # | ············································································
@@ -227,17 +232,29 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 # | :::::: Vagrant Message
 # | ············································································
 
-srv.vm.post_up_message = " \e[0;37m
+            srv.vm.post_up_message = " \e[0;37m
+░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
+░   WORDPRESS > Install                                  ░
+░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
 
-░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
-░ VAGRANT VM                                       ░
-░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
+  Url            : \e[0;33mhttp://#{server['private_network']['ip_private']}\e[0;37m
+  Url (optional) : \e[0;33mhttp://#{$wpDomain}\e[0;37m
 
-Vm Name    : \e[0;33m#{server['name']}\e[0;37m
-Private ip : \e[0;33m#{server["private_network"]["ip_private"]}\e[0;37m
-Public  ip : \e[0;33m#{server["private_network"]["ip_public"]}\e[0;37m
+░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
+░ Edit Hosts Files (optional)                            ░
+░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
 
-░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
+  In your terminal copy and run this command:
+\e[0;33mecho \"\\n#{server['private_network']['ip_private']} #{$wpDomain}\" | sudo tee -a /etc/hosts\e[0;37m
+
+░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
+░  VAGRANT VM                                            ░
+░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
+
+  Vm Name    : \e[0;33m#{server['name']}\e[0;37m
+  Private ip : \e[0;33m#{server["private_network"]["ip_private"]}\e[0;37m
+
+░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
 \e[32m"
 
         end
