@@ -3,4 +3,5 @@
 # |
 .vagrant/
 share/
+html/
 *.log
